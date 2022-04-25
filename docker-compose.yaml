@@ -1,0 +1,114 @@
+version: "3"
+services:
+  postgres1:
+    container_name: postgres1
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=demo
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=demo
+    ports:
+      - 54321:5432
+    volumes:
+      - ./.data/postgres1:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U demo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  postgres1_seeder:
+    image: postgres:14
+    container_name: postgres1_seeder
+    volumes:
+      - ./sample-data/sample.sql:/sample.sql
+    environment:
+      - PGPASSWORD=password
+    entrypoint:
+      [
+        "bash",
+        "-c",
+        "sleep 20 && psql --user=demo --host=postgres1 --port=54321 demo < /sample.sql && exit",
+      ]
+    depends_on:
+      - postgres1
+
+  postgres2:
+    container_name: postgres2
+    image: postgres:14
+    environment:
+      - POSTGRES_USER=demo
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=demo
+    ports:
+      - 54322:5432
+    volumes:
+      - ./.data/postgres2:/var/lib/postgresql/data
+
+  mariadb1:
+    image: mariadb:10.4
+    container_name: mariadb1
+    ports:
+      - 33061:3306
+    volumes:
+      - .data/mariadb1:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=demo
+      - MYSQL_USER=demo
+      - MYSQL_PASSWORD=password
+
+  mariadb1_seeder:
+    image: mariadb:10.4
+    container_name: mariadb1_seeder
+    volumes:
+      - ./sample-data/sample.sql:/sample.sql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    entrypoint:
+      [
+        "bash",
+        "-c",
+        "sleep 20 && mysql --user=root --password=password --host=mariadb1 --port=33061 demo < /sample.sql && exit",
+      ]
+    depends_on:
+      - mariadb1
+
+  mariadb2:
+    image: mariadb:10.8
+    container_name: mariadb2
+    ports:
+      - 33062:3306
+    volumes:
+      - .data/mariadb2:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=demo
+      - MYSQL_USER=demo
+      - MYSQL_PASSWORD=password
+
+  mongodb1:
+    container_name: mongodb1
+    image: mongo:4.4
+    volumes:
+      - .data/mongodb1:/data/db
+      # init data
+      - ./sample-data/mongo.js:/docker-entrypoint-initdb.d/mongo.js
+    ports:
+      - 27018:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=demo
+
+  mongodb2:
+    container_name: mongodb2
+    image: mongo:5.0
+    volumes:
+      - .data/mongodb2:/data/db
+    ports:
+      - 27019:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+      - MONGO_INITDB_DATABASE=demo

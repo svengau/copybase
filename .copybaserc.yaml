@@ -1,0 +1,42 @@
+backup:
+  folder: .backup
+databases:
+  postgres1:
+    database: demo
+    protocol: postgresql
+    hostname: 127.0.0.1
+    port: 54321
+    username: demo
+    password: password
+
+  postgres2:
+    uri: postgresql://demo:password@localhost:54322/demo
+
+  mariadb1:
+    database: demo
+    protocol: mariadb
+    hostname: 127.0.0.1
+    port: 33061
+    username: demo
+    password: password
+
+  mariadb2:
+    database: demo
+    protocol: mariadb
+    hostname: 127.0.0.1
+    port: 33062
+    username: demo
+    password: password
+
+  mongodb1:
+    database: demo
+    protocol: mongodb
+    hostname: 127.0.0.1
+    port: 27018
+    username: root
+    password: password
+
+  mongodb2:
+    database: demo
+    protocol: mongodb
+    uri: mongodb://root:password@localhost:27018/demo
