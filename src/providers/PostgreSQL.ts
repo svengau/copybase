@@ -8,7 +8,17 @@ export default class PostgreSQL extends BaseProvider {
   public async dump(outputFile: string): Promise<ExitCode> {
     await this.checkCommandExists("pg_dump", ["--version"]);
 
-    const { database, hostname, port, username, password } = this.config;
+    const {
+      database,
+      hostname,
+      port,
+      username,
+      password,
+      pg_dump: pdDumpOptions,
+    } = this.config;
+
+    const customOptions = this.getCustomOptions(pdDumpOptions);
+
     this.logInfo(`Dump ${database}`);
     return this.execCommand(
       "pg_dump",
@@ -18,8 +28,9 @@ export default class PostgreSQL extends BaseProvider {
         port ? `--port=${port}` : "",
         username ? `--username=${username}` : "",
         hostname ? `--host=${hostname}` : "",
-        `-d ${database}`,
-        `-f ${outputFile}`,
+        `--dbname=${database}`,
+        `--file=${outputFile}`,
+        ...customOptions,
       ],
       { env: { PGPASSWORD: password } }
     );
@@ -28,7 +39,17 @@ export default class PostgreSQL extends BaseProvider {
   public async restore(inputFile: string) {
     await this.checkCommandExists("psql", ["--version"]);
 
-    const { database, hostname, port, username, password } = this.config;
+    const {
+      database,
+      hostname,
+      port,
+      username,
+      password,
+      psql: psqlOptions,
+    } = this.config;
+
+    const customOptions = this.getCustomOptions(psqlOptions);
+
     this.logInfo(`Restore ${database}`);
     return this.execCommand(
       "psql",
@@ -38,9 +59,10 @@ export default class PostgreSQL extends BaseProvider {
         port ? `--port=${port}` : "",
         username ? `--username=${username}` : "",
         hostname ? `--host=${hostname}` : "",
-        `-d ${database}`,
-        `-f ${inputFile}`,
-        `> /dev/null`,
+        `--dbname=${database}`,
+        `--file=${inputFile}`,
+        ...customOptions,
+        "> /dev/null",
       ],
       { env: { PGPASSWORD: password } }
     );
@@ -49,13 +71,24 @@ export default class PostgreSQL extends BaseProvider {
   public async listTables() {
     await this.checkCommandExists("psql", ["--version"]);
 
-    const { database, hostname, port, username, password } = this.config;
+    const {
+      database,
+      hostname,
+      port,
+      username,
+      password,
+      psql: psqlOptions,
+    } = this.config;
+
+    const customOptions = this.getCustomOptions(psqlOptions);
+
     return this.execCommand(
       "psql",
       [
         port ? `--port=${port}` : "",
         username ? `--username=${username}` : "",
         hostname ? `--host=${hostname}` : "",
+        ...customOptions,
         `--command="SELECT * FROM pg_catalog.pg_tables;"`,
       ],
       { env: { PGPASSWORD: password } }

@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { exec, spawn, SpawnOptionsWithoutStdio } from "child_process";
+import { spawn, SpawnOptionsWithoutStdio } from "child_process";
 
 export type ExitCode = number;
 
@@ -66,6 +66,21 @@ abstract class BaseProvider {
     if (exitCode !== 0) {
       throw new Error(`Command ${cmd} not found`);
     }
+  }
+
+  getCustomOptions(options: Record<string, string | string[]>): string[] {
+    if (!options) {
+      return [];
+    }
+    const result: string[] = [];
+    Object.entries(options).map(([key, valueOrArray]) => {
+      if (Array.isArray(valueOrArray)) {
+        valueOrArray.forEach((value) => result.push(`--${key}=${value}`));
+      } else {
+        result.push(`--${key}=${valueOrArray}`);
+      }
+    });
+    return result;
   }
 }
 

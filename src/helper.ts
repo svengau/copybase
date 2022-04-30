@@ -19,6 +19,12 @@ export interface CopybaseConfig {
       port: number;
       user: string;
       password: string;
+      uri: string;
+      mongodump: any;
+      psql: any;
+      psql_dump: any;
+      mysql: any;
+      mysqldump: any;
     }
   >;
 }
@@ -103,8 +109,9 @@ export function loadConfig(moduleName: string) {
 export async function backup(
   config: CopybaseConfig,
   { database }: { database: string },
-  { verbose }: CliOptions
+  options?: CliOptions
 ) {
+  const { verbose } = options || {};
   if (!checkDatabaseConfig(database, config)) {
     return;
   }
@@ -138,8 +145,9 @@ export async function backup(
 export async function copy(
   config: CopybaseConfig,
   { fromDatabase, toDatabase }: { fromDatabase: string; toDatabase: string },
-  { verbose }: CliOptions
+  options?: CliOptions
 ) {
+  const { verbose } = options || {};
   if (!checkDatabaseConfig(fromDatabase, config)) {
     return;
   }
@@ -180,8 +188,9 @@ export async function copy(
 export async function listTables(
   config: CopybaseConfig,
   { database }: { database: string },
-  { verbose }: CliOptions
+  options?: CliOptions
 ) {
+  const { verbose } = options || {};
   if (!checkDatabaseConfig(database, config)) {
     return;
   }

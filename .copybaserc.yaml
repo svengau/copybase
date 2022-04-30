@@ -35,6 +35,9 @@ databases:
     port: 27018
     username: root
     password: password
+    mongodump:
+      authenticationDatabase: admin
+      excludeCollection: passwords
 
   mongodb2:
     database: demo

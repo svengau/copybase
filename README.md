@@ -14,6 +14,8 @@ copybase copy staging local
 copybase backup prod
 ```
 
+Note: copybase uses the native tools to build command lines to launch. So you still need to install mysql, psql or mongo.
+
 ## Getting Started
 
 ### Installation
@@ -53,6 +55,8 @@ databases:
   staging:
     uri: postgresql://demo:staging.example.com@localhost:54322/demo
 ```
+
+**Note**: you can pass some extra parameters to the command line underneath. Look at [.copybaserc.yaml](https://github.com/svengau/copybase/blob/main/.copybaserc.yaml) in the current repository.
 
 ### Usage
 
