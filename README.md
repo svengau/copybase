@@ -32,6 +32,12 @@ npm i copybase
 yarn add copybase
 ```
 
+You also need to install the official db tools:
+
+- [Instructions for MongoDB](https://www.mongodb.com/docs/database-tools/installation/installation/)
+- [Instructions for MySQL](https://dev.mysql.com/doc/refman/8.0/en/installing.html)
+- [Instructions for PostgreSQL](https://www.postgresql.org/download/)
+
 ### Configuration
 
 Copybase uses [cosmiconfig](https://github.com/davidtheclark/cosmiconfig), so you just need to create a file `.copybaserc.yaml` (or `.copybaserc.json`, `.copybaserc.js`) with the following sample config:
