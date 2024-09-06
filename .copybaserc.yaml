@@ -38,8 +38,12 @@ databases:
     mongodump:
       authenticationDatabase: admin
       excludeCollection: passwords
+    mongorestore:
+      authenticationDatabase: admin
 
   mongodb2:
     database: demo
     protocol: mongodb
     uri: mongodb://root:password@localhost:27018/demo
+    mongorestore:
+      authenticationDatabase: admin

@@ -1,6 +1,6 @@
 import os from "os";
 import path from "path";
-import fs from "fs/promises";
+import fs from "fs";
 import { cosmiconfigSync } from "cosmiconfig";
 import dayjs from "dayjs";
 
@@ -129,9 +129,43 @@ export async function backup(
     database,
     `${dayjs().format(config.backup.filenamePattern)}`
   );
-  await fs.mkdir(path.dirname(outputFile), { recursive: true });
+  await fs.promises.mkdir(path.dirname(outputFile), { recursive: true });
 
   await provider.dump(outputFile);
+}
+
+/**
+ * Restore a database from a given folder
+ 
+ * @param config 
+ * @param param1 
+ * @param options 
+ * @returns 
+ */
+export async function restore(
+  config: CopybaseConfig,
+  { from, toDatabase }: { from: string; toDatabase: string },
+  options?: CliOptions
+) {
+  const { verbose } = options || {};
+  if (!checkDatabaseConfig(toDatabase, config)) {
+    return;
+  }
+
+  const dbConfig = config.databases[toDatabase];
+
+  const provider = new providers[dbConfig.protocol]({ ...dbConfig, verbose });
+  const filePath = [
+    from,
+    path.join(config.backup.folder, from),
+    path.join(process.cwd(), from),
+  ].find((filePath) => fs.existsSync(filePath));
+
+  if (!filePath) {
+    console.error(`Folder "${from}" not found`);
+    return;
+  }
+  await provider.restore(from);
 }
 
 /**

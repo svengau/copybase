@@ -72,14 +72,15 @@ Usage: copybase [options] [command]
 Copy quickly a database
 
 Options:
--V, --version output the version number
--h, --help display help for command
+  -V, --version                               output the version number
+  -h, --help                                  display help for command
 
 Commands:
-copy [options]          <fromDatabase> <toDatabase> Copy a database
-list:tables [options]   <database> List all tables in database
-backup [options]        <database> Backup a database
-help [command]          display help for command
+  copy [options] <fromDatabase> <toDatabase>  Copy a database
+  list:tables [options] <database>            List all tables in database
+  backup [options] <database>                 Backup a database
+  restore [options] <from> <toDatabase>       Restore a database
+  help [command]                              display help for command
 ```
 
 [npm]: https://img.shields.io/npm/v/copybase.svg
