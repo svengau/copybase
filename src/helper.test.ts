@@ -42,6 +42,7 @@ const mongorestore2 = [
     "--quiet",
     "'mongodb://root:password@localhost:27018/demo'",
     expect.anything(),
+    "--authenticationDatabase=admin",
   ],
 ];
 

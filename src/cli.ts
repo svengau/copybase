@@ -7,6 +7,7 @@ import {
   loadConfig,
   CliOptions,
   CopybaseConfig,
+  restore,
 } from "./helper";
 
 const moduleName = "copybase";
@@ -62,6 +63,18 @@ program
   .option("--verbose", "Verbose mode")
   .action((database: string, options: CliOptions) =>
     execAction(() => backup(config as CopybaseConfig, { database }, options))
+  );
+
+program
+  .command("restore")
+  .description("Restore a database")
+  .argument("<from>", "archive folder")
+  .argument("<toDatabase>", "Destination Database")
+  .option("--verbose", "Verbose mode")
+  .action((from: string, toDatabase: string, options: CliOptions) =>
+    execAction(() =>
+      restore(config as CopybaseConfig, { from, toDatabase }, options)
+    )
   );
 
 program.parse(process.argv);

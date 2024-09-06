@@ -7,6 +7,12 @@ export default class MongoDb extends BaseProvider {
     super({ port: 27017, ...config });
   }
 
+  /**
+   * Dump a database into the given folder
+   *
+   * @param outputFolder
+   * @returns
+   */
   public async dump(outputFolder: string): Promise<ExitCode> {
     await this.checkCommandExists("mongodump", ["--version"]);
 
@@ -48,6 +54,9 @@ export default class MongoDb extends BaseProvider {
     return exitCode;
   }
 
+  /**
+   * Restore a database from the given folder
+   */
   public async restore(inputFolder: string) {
     await this.checkCommandExists("mongorestore", ["--version"]);
 
@@ -79,6 +88,10 @@ export default class MongoDb extends BaseProvider {
     );
   }
 
+  /**
+   * List all tables in the database
+   * @returns
+   */
   public async listTables() {
     await this.checkCommandExists("mongo", ["--version"]);
 
