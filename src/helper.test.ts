@@ -59,6 +59,9 @@ const pgDump1 = [
     "--host=127.0.0.1",
     "--dbname=demo",
     expect.anything(), // --file=/var/folders/8q/fzn0b8r51tz6hdsw6pfqz41h0000gn/T/postgre1
+    "--no-owner",
+    "--exclude-table=users",
+    "--exclude-table=tokens",
   ],
   { env: { PGPASSWORD: "password" } },
 ];

@@ -74,7 +74,9 @@ abstract class BaseProvider {
     }
     const result: string[] = [];
     Object.entries(options).map(([key, valueOrArray]) => {
-      if (Array.isArray(valueOrArray)) {
+      if (key === "_raw_options") {
+        result.push(valueOrArray as string);
+      } else if (Array.isArray(valueOrArray)) {
         valueOrArray.forEach((value) => result.push(`--${key}=${value}`));
       } else {
         result.push(`--${key}=${valueOrArray}`);

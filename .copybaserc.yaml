@@ -8,7 +8,11 @@ databases:
     port: 54321
     username: demo
     password: password
-
+    pg_dump:
+      _raw_options: "--no-owner"
+      exclude-table: 
+        - users
+        - tokens
   postgres2:
     uri: postgresql://demo:password@localhost:54322/demo
 
