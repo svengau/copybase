@@ -52,8 +52,6 @@ const psqlVersion = ["psql", ["--version"], { quiet: true }];
 const pgDump1 = [
   "pg_dump",
   [
-    "--clean",
-    "--no-acl",
     "--port=54321",
     "--username=demo",
     "--host=127.0.0.1",

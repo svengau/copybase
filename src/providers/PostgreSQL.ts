@@ -23,8 +23,6 @@ export default class PostgreSQL extends BaseProvider {
     return this.execCommand(
       "pg_dump",
       [
-        "--clean",
-        "--no-acl",
         port ? `--port=${port}` : "",
         username ? `--username=${username}` : "",
         hostname ? `--host=${hostname}` : "",
